@@ -1,12 +1,17 @@
 module.exports = {
   extends: ["expo", "prettier"],
   plugins: ["prettier"],
-  rules: {
-    "prettier/prettier": [
-      "error",
-      {
-        endOfLine: "auto",
+  overrides: [
+    {
+      files: ["*.js", "*.jsx", "*.ts", "*.tsx"], // Only lint JS and TS files
+      rules: {
+        "prettier/prettier": [
+          "error",
+          {
+            endOfLine: "auto",
+          },
+        ],
       },
-    ],
-  },
+    },
+  ],
 };
