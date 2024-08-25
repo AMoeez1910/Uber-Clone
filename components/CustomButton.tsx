@@ -38,16 +38,18 @@ const CustomButton = ({
   IconRight,
   className,
   isLoading,
+  ...props
 }: ButtonProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
       className={`w-full rounded-full p-5 flex flex-row justify-center items-center shadow-md shadow-neutral-400/70 ${getVariantStyle(bgVariant)} ${className} ${isLoading ? "opacity-50" : ""}`}
+      {...props}
       disabled={isLoading}
     >
       {IconLeft && <IconLeft />}
-      <Text className={`tex-lg font-bold ${getTextVariantStyle(textVariant)}`}>
+      <Text className={`text-md font-bold ${getTextVariantStyle(textVariant)}`}>
         {title}
       </Text>
       {IconRight && <IconRight />}

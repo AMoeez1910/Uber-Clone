@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import { onboarding } from "@/constants";
 import Swiper from "react-native-swiper";
 import CustomButton from "@/components/CustomButton";
+
 const Welcome = () => {
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -13,7 +14,7 @@ const Welcome = () => {
       <TouchableOpacity
         className="w-full flex justify-end items-end p-5"
         onPress={() => {
-          router.replace("/sign-in");
+          router.replace("/sign-up");
         }}
       >
         <Text className="text-md text-black font-JakartaBold">Skip</Text>
@@ -47,13 +48,13 @@ const Welcome = () => {
         title={activeIndex === onboarding.length - 1 ? "Get Started" : "Next"}
         onPress={() => {
           if (activeIndex === onboarding.length - 1) {
-            router.replace("/sign-in");
+            router.replace("/sign-up");
           } else {
             swiperRef.current?.scrollBy(1);
           }
         }}
-        bgVariant="primary"
         className="w-11/12"
+        bgVariant="primary"
       />
     </SafeAreaView>
   );

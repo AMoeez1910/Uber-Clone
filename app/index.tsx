@@ -1,6 +1,12 @@
-import { View } from "react-native";
 import React from "react";
+import { Redirect } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function HomeScreen() {
-  return <View className="flex-1 items-center justify-center bg-white"></View>;
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return <Redirect href={"/(root)/(tabs)/home"} />;
+  }
+  return <Redirect href="/(auth)/welcome" />;
 }
