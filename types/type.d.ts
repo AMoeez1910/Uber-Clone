@@ -1,24 +1,24 @@
 import { TextInputProps, TouchableOpacityProps } from "react-native";
 
 declare interface Driver {
-  driver_id: number;
+  driver_id: string;
   first_name: string;
   last_name: string;
   profile_image_url: string;
   car_image_url: string;
   car_seats: number;
-  rating: number;
+  rating: string;
 }
 
 declare interface MarkerData {
   latitude: number;
   longitude: number;
-  id: number;
+  driver_id: string;
   title: string;
   profile_image_url: string;
   car_image_url: string;
   car_seats: number;
-  rating: number;
+  rating: string;
   first_name: string;
   last_name: string;
   time?: number;
@@ -80,7 +80,7 @@ declare interface GoogleInputProps {
 }
 
 declare interface InputFieldProps extends TextInputProps {
-  label: string;
+  label?: string;
   icon?: any;
   secureTextEntry?: boolean;
   labelStyle?: string;
@@ -88,6 +88,7 @@ declare interface InputFieldProps extends TextInputProps {
   inputStyle?: string;
   iconStyle?: string;
   className?: string;
+  clearText?: () => void;
 }
 
 declare interface PaymentProps {
@@ -127,8 +128,8 @@ declare interface LocationStore {
 
 declare interface DriverStore {
   drivers: MarkerData[];
-  selectedDriver: number | null;
-  setSelectedDriver: (driverId: number) => void;
+  selectedDriver: string | null;
+  setSelectedDriver: (driverId: string) => void;
   setDrivers: (drivers: MarkerData[]) => void;
   clearSelectedDriver: () => void;
 }
@@ -137,4 +138,27 @@ declare interface DriverCardProps {
   item: MarkerData;
   selected: number;
   setSelected: () => void;
+}
+declare interface GeoApiResultProps {
+  query: {
+    text: string;
+  };
+  results: GeoApiProps[];
+}
+declare interface GeoApiProps {
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  country: string;
+  country_code: string;
+  county: string;
+  district: string;
+  formatted: string;
+  lat: number;
+  lon: number;
+  name: string;
+  postcode: string;
+  state: string;
+  state_code: string;
+  suburb: string;
 }

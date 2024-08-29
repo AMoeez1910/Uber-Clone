@@ -8,12 +8,15 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
 import { router } from "expo-router";
-
+import GoogleTextInput from "@/components/GoogleTextInput";
+import Map from "@/components/Map";
+import * as Location from "expo-location";
+import { useLocationStore } from "@/store";
 const recentRides = [
   {
     ride_id: "1",
@@ -123,8 +126,43 @@ const recentRides = [
 
 const HomeScreen = () => {
   const { user } = useUser();
+  const { setUserLocation, setDestinationLocation } = useLocationStore();
   const [loading, setLoading] = useState(false);
   const { signOut } = useClerk();
+  const [hasPermissions, setHasPermissions] = useState<boolean>(false);
+  const handleDestinationPress = ({
+    longitude,
+    latitude,
+    address,
+  }: {
+    longitude: number;
+    latitude: number;
+    address: string;
+  }) => {
+    setDestinationLocation({ longitude, latitude, address });
+  };
+
+  useEffect(() => {
+    const requestLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setHasPermissions(false);
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync();
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords?.latitude!,
+        longitude: location.coords?.longitude!,
+      });
+      setUserLocation({
+        longitude: location.coords?.longitude!,
+        latitude: location.coords?.latitude!,
+        address: `${address[0].name}, ${address[0].region}`,
+      });
+    };
+    requestLocation();
+  }, []);
+
   const SignedOut = () => {
     try {
       setLoading(true);
@@ -166,18 +204,32 @@ const HomeScreen = () => {
         }}
         ListHeaderComponent={() => {
           return (
-            <View className="flex flex-row items-center justify-between my-5">
-              <Text className="text-lg font-JakartaSemiBold">
-                Welcome {user?.firstName?.split(" ")[0]}
+            <>
+              <View className="flex flex-row items-center justify-between mt-5">
+                <Text className="text-lg font-JakartaSemiBold">
+                  Welcome {user?.firstName?.split(" ")[0]}
+                </Text>
+                <TouchableOpacity onPress={SignedOut}>
+                  <Image
+                    source={icons.out}
+                    className="h-5 w-5"
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+              <GoogleTextInput
+                icon={icons.search}
+                handlePress={handleDestinationPress}
+              />
+              <>
+                <View className="flex flex-row items-center bg-transparent h-[300px]">
+                  <Map />
+                </View>
+              </>
+              <Text className="text-xl font-JakartaBold mt-5 mb-3">
+                Recent Rides
               </Text>
-              <TouchableOpacity onPress={SignedOut}>
-                <Image
-                  source={icons.out}
-                  className="h-5 w-5"
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            </View>
+            </>
           );
         }}
       />

@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { InputFieldProps } from "@/types/type";
@@ -21,6 +22,7 @@ const InputField = ({
   inputStyle,
   iconStyle,
   className,
+  clearText,
   ...props
 }: InputFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +53,14 @@ const InputField = ({
               >
                 <Image source={icons.eyecross} className="w-6 h-6 mr-4" />
               </TouchableWithoutFeedback>
+            )}
+            {clearText && (
+              <TouchableOpacity onPress={clearText}>
+                <Image
+                  source={icons.close}
+                  className={`w-6 h-6 mr-4 ${iconStyle} `}
+                />
+              </TouchableOpacity>
             )}
           </View>
         </View>
