@@ -1,21 +1,24 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { GeoApiProps, GeoApiResultProps, GoogleInputProps } from "@/types/type";
 import InputField from "./InputField";
 import { useDebounce } from "@/lib/utils";
-import { useLocationStore } from "@/store";
 
 const GoogleTextInput = ({
   icon,
   initialLocation,
   containerStyle,
   textInputBackgroundColor,
+  label,
+  placeholder,
+  giveRecommendations = true,
   handlePress,
 }: GoogleInputProps) => {
-  const { destinationAddress } = useLocationStore();
-  const [search, setSearch] = useState(destinationAddress || "");
+  const [search, setSearch] = useState(initialLocation || "");
   const debounceSearch = useDebounce(search, 500);
   const [locations, setLocations] = useState<GeoApiProps[]>([]);
+  const [giveRecommendation, setGiveRecommendation] =
+    useState(giveRecommendations);
   const [dropdown, setDropdown] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -33,15 +36,19 @@ const GoogleTextInput = ({
         console.error(error);
       }
     };
-    if (debounceSearch) fetchData();
-  }, [debounceSearch]);
+    if (debounceSearch && giveRecommendation) fetchData();
+  }, [debounceSearch, giveRecommendation]);
   return (
     <View>
       <InputField
         icon={icon}
-        placeholder="Where do you want to go?"
+        label={label}
+        placeholder={placeholder}
         value={search}
-        onChangeText={setSearch}
+        onChangeText={(text) => {
+          setSearch(text);
+          setGiveRecommendation(true);
+        }}
         clearText={() => {
           setSearch("");
           setLocations([]);
@@ -57,6 +64,8 @@ const GoogleTextInput = ({
                 className="p-3 border-b border-neutral-200"
                 onPress={() => {
                   setDropdown(false);
+                  setSearch(location.formatted);
+                  setGiveRecommendation(false);
                   handlePress({
                     latitude: location.lat,
                     longitude: location.lon,

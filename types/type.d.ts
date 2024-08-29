@@ -9,12 +9,11 @@ declare interface Driver {
   car_seats: number;
   rating: string;
 }
-
 declare interface MarkerData {
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
   driver_id: string;
-  title: string;
+  title?: string;
   profile_image_url: string;
   car_image_url: string;
   car_seats: number;
@@ -67,6 +66,9 @@ declare interface GoogleInputProps {
   icon?: string;
   initialLocation?: string;
   containerStyle?: string;
+  label?: string;
+  giveRecommendations?: boolean;
+  placeholder?: string;
   textInputBackgroundColor?: string;
   handlePress: ({
     latitude,
@@ -136,7 +138,7 @@ declare interface DriverStore {
 
 declare interface DriverCardProps {
   item: MarkerData;
-  selected: number;
+  selected: string | undefined;
   setSelected: () => void;
 }
 declare interface GeoApiResultProps {

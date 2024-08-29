@@ -126,7 +126,8 @@ const recentRides = [
 
 const HomeScreen = () => {
   const { user } = useUser();
-  const { setUserLocation, setDestinationLocation } = useLocationStore();
+  const { setUserLocation, setDestinationLocation, destinationAddress } =
+    useLocationStore();
   const [loading, setLoading] = useState(false);
   const { signOut } = useClerk();
   const [hasPermissions, setHasPermissions] = useState<boolean>(false);
@@ -140,6 +141,7 @@ const HomeScreen = () => {
     address: string;
   }) => {
     setDestinationLocation({ longitude, latitude, address });
+    router.push("/(root)/find-ride");
   };
 
   useEffect(() => {
@@ -220,6 +222,8 @@ const HomeScreen = () => {
               <GoogleTextInput
                 icon={icons.search}
                 handlePress={handleDestinationPress}
+                initialLocation={destinationAddress!}
+                placeholder="Where do you want to go?"
               />
               <>
                 <View className="flex flex-row items-center bg-transparent h-[300px]">
