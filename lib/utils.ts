@@ -10,6 +10,7 @@ export const formatDate = (date: Date): string => {
 export const formatTime = (minutes: number): string => {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
+  if (h === 0) return `${m}m`;
   return `${h}h ${m}m`;
 };
 

@@ -1,7 +1,7 @@
 import { TextInputProps, TouchableOpacityProps } from "react-native";
 
 declare interface Driver {
-  driver_id: string;
+  id: number;
   first_name: string;
   last_name: string;
   profile_image_url: string;
@@ -12,7 +12,7 @@ declare interface Driver {
 declare interface MarkerData {
   latitude?: number;
   longitude?: number;
-  driver_id: string;
+  id: number;
   title?: string;
   profile_image_url: string;
   car_image_url: string;
@@ -42,7 +42,7 @@ declare interface Ride {
   ride_time: number;
   fare_price: string;
   payment_status: string;
-  driver_id: number;
+  id: number;
   user_email?: string;
   created_at: string;
   driver: {
@@ -130,16 +130,16 @@ declare interface LocationStore {
 
 declare interface DriverStore {
   drivers: MarkerData[];
-  selectedDriver: string | null;
-  setSelectedDriver: (driverId: string) => void;
+  selectedDriver: number | null;
+  setSelectedDriver: (driverId: number) => void;
   setDrivers: (drivers: MarkerData[]) => void;
   clearSelectedDriver: () => void;
 }
 
 declare interface DriverCardProps {
   item: MarkerData;
-  selected: string | undefined;
-  setSelected: () => void;
+  selected: number | undefined;
+  setSelected: (driverId: number) => void;
 }
 declare interface GeoApiResultProps {
   query: {

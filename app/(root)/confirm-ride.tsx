@@ -1,4 +1,4 @@
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 import React from "react";
 import RideLayout from "@/components/RideLayout";
 import CustomButton from "@/components/CustomButton";
@@ -12,22 +12,24 @@ const ConfirmRide = () => {
     <RideLayout title="Choose a Driver" snapPoints={["55%", "85%"]}>
       <FlatList
         data={drivers}
-        keyExtractor={(item) => item.driver_id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <DriverCard
             item={item}
-            selected={selectedDriver as string}
-            setSelected={() => setSelectedDriver(item.driver_id)}
+            selected={selectedDriver!}
+            setSelected={setSelectedDriver}
           />
         )}
         ListFooterComponent={() => (
-          <CustomButton
-            title="Select Ride"
-            isLoading={selectedDriver === null}
-            onPress={() => {
-              router.push("/(root)/book-ride");
-            }}
-          />
+          <View>
+            <CustomButton
+              title="Select Ride"
+              isLoading={selectedDriver === null}
+              onPress={() => {
+                router.push("/(root)/book-ride");
+              }}
+            />
+          </View>
         )}
       />
     </RideLayout>

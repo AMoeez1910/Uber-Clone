@@ -7,9 +7,11 @@ import { formatTime } from "@/lib/utils";
 const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
   return (
     <TouchableOpacity
-      onPress={setSelected}
+      onPress={() => {
+        setSelected(item.id);
+      }}
       className={`flex flex-row items-center justify-between py-5 px-3 rounded-xl ${
-        selected === item.driver_id ? "bg-general-600" : "bg-white"
+        selected === item.id ? "bg-general-600" : "bg-white"
       }`}
     >
       <View className="flex flex-row justify-center items-center">
@@ -40,7 +42,7 @@ const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
                 resizeMode="contain"
               />
               <Text className="text-md font-black font-JakartaMedium ml-1">
-                {item.price}
+                ${item.price}
               </Text>
               <Text className="text-sm font-JakartaRegular text-general-800 mx-1">
                 |
@@ -48,7 +50,7 @@ const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
             </View>
             <View className="flex flex-row justify-center items-center">
               <Text className="text-sm font-JakartaRegular text-general-800">
-                {item.time ? formatTime(item.time) : "Shortly"}
+                {item.time ? formatTime(parseInt(`${item.time}`)) : "5"}
               </Text>
               <Text className="text-sm font-JakartaRegular text-general-800 mx-1">
                 |
