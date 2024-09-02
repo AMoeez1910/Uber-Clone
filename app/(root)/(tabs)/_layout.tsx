@@ -1,39 +1,32 @@
-import { View, Text, ImageSourcePropType, Image } from "react-native";
-import React from "react";
-import { useAuth } from "@clerk/clerk-expo";
-import { Redirect, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
+import { Image, ImageSourcePropType, View } from "react-native";
+
 import { icons } from "@/constants";
 
 const TabIcon = ({
-  focused,
   source,
+  focused,
 }: {
   source: ImageSourcePropType;
   focused: boolean;
-}) => {
-  return (
+}) => (
+  <View
+    className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-general-300" : ""}`}
+  >
     <View
-      className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-general-300" : ""}`}
+      className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-general-400" : ""}`}
     >
-      <View
-        className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-general-400" : ""} `}
-      >
-        <Image
-          source={source}
-          tintColor={"white"}
-          resizeMode="contain"
-          className="w-6 h-6"
-        />
-      </View>
+      <Image
+        source={source}
+        tintColor="white"
+        resizeMode="contain"
+        className="w-7 h-7"
+      />
     </View>
-  );
-};
+  </View>
+);
 
-const Layout = () => {
-  const { isSignedIn } = useAuth();
-  if (!isSignedIn) {
-    return <Redirect href={"/(auth)/welcome"} />;
-  }
+export default function Layout() {
   return (
     <Tabs
       initialRouteName="index"
@@ -43,15 +36,16 @@ const Layout = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#333333",
-          paddingBottom: 0,
+          borderRadius: 50,
+          paddingBottom: 0, // ios only
           overflow: "hidden",
-          borderRadius: 100,
           marginHorizontal: 20,
           marginBottom: 20,
+          height: 78,
           display: "flex",
-          flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          flexDirection: "row",
           position: "absolute",
         },
       }}
@@ -62,7 +56,7 @@ const Layout = () => {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.home} />
+            <TabIcon source={icons.home} focused={focused} />
           ),
         }}
       />
@@ -72,7 +66,7 @@ const Layout = () => {
           title: "Rides",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.list} />
+            <TabIcon source={icons.list} focused={focused} />
           ),
         }}
       />
@@ -82,7 +76,7 @@ const Layout = () => {
           title: "Chat",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.chat} />
+            <TabIcon source={icons.chat} focused={focused} />
           ),
         }}
       />
@@ -92,12 +86,10 @@ const Layout = () => {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.profile} />
+            <TabIcon source={icons.profile} focused={focused} />
           ),
         }}
       />
     </Tabs>
   );
-};
-
-export default Layout;
+}
