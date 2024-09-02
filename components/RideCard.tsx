@@ -11,7 +11,7 @@ const RideCard = ({ ride }: { ride: Ride }) => {
         <View className="flex flex-row items-center justify-between">
           <Image
             source={{
-              uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${ride.destination_longitude},${ride.destination_latitude}&zoom=14&apiKey=${process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY}`,
+              uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${ride.destination_longitude},${ride.destination_latitude}&zoom=14&apiKey=${process.env.EXPO_PUBLIC_GEO_API}`,
             }}
             className="w-[80px] h-[90px] rounded-lg"
           />
@@ -39,7 +39,8 @@ const RideCard = ({ ride }: { ride: Ride }) => {
               Date & Time
             </Text>
             <Text className="text-md font-JakartaBold" numberOfLines={1}>
-              {formatDate(ride.created_at)}, {formatTime(ride.ride_time)}
+              {formatDate(new Date(ride.created_at))},{" "}
+              {formatTime(ride.ride_time)}
             </Text>
           </View>
 
